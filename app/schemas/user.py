@@ -14,7 +14,7 @@ class UserOut(UserBase):
     role_id: int  # ⬅️ también corregido aquí
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Esquema para actualizar perfil
 class UpdateUserSchema(BaseModel):
@@ -22,7 +22,7 @@ class UpdateUserSchema(BaseModel):
     email: Optional[EmailStr] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UpdatePasswordSchema(BaseModel):
     old_password: str

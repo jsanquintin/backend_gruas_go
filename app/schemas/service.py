@@ -9,7 +9,7 @@ class ServiceRequestCreate(BaseModel):
     destination_lng: float
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ServiceResponse(BaseModel):
     id: int
@@ -21,7 +21,7 @@ class ServiceResponse(BaseModel):
     status: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ServiceOut(BaseModel):
@@ -31,7 +31,7 @@ class ServiceOut(BaseModel):
     status: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class update_service_status(BaseModel):
     status: str
