@@ -1,9 +1,81 @@
+# ===========================
+# 🚀 FastAPI + Python backend
+# ===========================
+
+# Byte-compiled / cache files
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
-*.db
-*.sqlite3
-logs/
-static/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env.bak
+
+# Environment configuration
 .env
+*.env
+
+# Logs and temp files
+*.log
+logs/
+*.tmp
+*.swp
+
+# Static and media (optional: keep only placeholders)
+static/
+media/
+uploads/
+
+# IDE / Editor config
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# PyInstaller
+*.spec
+
+# Docker / Container
+docker-compose.yml
+Dockerfile
+container/
+containerfile
+
+# Testing / Coverage
+.coverage
+htmlcov/
+pytest_cache/
+.tox/
+.mypy_cache/
+.pytest_cache/
+
+# Cache
+__pycache__/
+.cache/
+*.bak
+*.orig
+
+# Jupyter / notebooks (if any)
+*.ipynb_checkpoints
+
+# ===========================
+# ✅ Custom folders (GruaGo)
+# ===========================
+# Auto-generated folders (runtime)
+static/profile_pics/
+static/ride_receipts/
+static/misc/
+logs/app.log
