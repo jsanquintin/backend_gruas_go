@@ -1,0 +1,6 @@
+container/
+!requirements.txt
+.git
+**/__pycache__/
+.venv/
+**/*.pyc

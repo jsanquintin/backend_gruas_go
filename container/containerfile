@@ -1,0 +1,57 @@
+# podman build --rm --force-rm --no-cache --ignorefile container/.containerignore -t gruas -f container/containerfile .
+ARG PYTHON_VERSION=3.13
+FROM docker.io/python:${PYTHON_VERSION}-slim as BUILD
+
+# Buenas prácticas para Python/pip en contenedores
+# (no *.pyc, logs inmediatos stdout/stderr, tracebacks más útiles, evita cachear ruedas)
+# (no revisar versión en cada pip, timeouts más generosos en red, suprime el warning de pip como root)
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONFAULTHANDLER=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PIP_ROOT_USER_ACTION=ignore \
+    DEBIAN_FRONTEND=noninteractive
+
+# Virtualenv aislado (recomendado)
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Instalación de dependencias
+RUN apt update && apt upgrade -y && apt autoremove --purge -y && \
+    apt install --no-install-recommends -y libpq-dev gcc python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+
+WORKDIR /gruas
+COPY ./requirements.txt .
+RUN pip install -Ur requirements.txt
+
+# -------------------------------------------------------------------------------------------------- #
+
+FROM docker.io/python:${PYTHON_VERSION}-slim as RUNTIME
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONFAULTHANDLER=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PIP_ROOT_USER_ACTION=ignore \
+    DEBIAN_FRONTEND=noninteractive
+
+# Solo dependencias de runtime
+RUN apt-get update && apt upgrade -y && apt autoremove --purge -y && \
+    apt-get install -y --no-install-recommends libpq5 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copiar el venv preparado en el stage anterior
+COPY --from=BUILD /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Aplicación
+WORKDIR /gruas
+COPY . .
+
+CMD ["python", "app/main.py"]
