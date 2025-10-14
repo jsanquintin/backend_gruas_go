@@ -1,5 +1,5 @@
 # podman build --rm --force-rm --no-cache --ignorefile container/.containerignore -t gruas -f container/containerfile .
-ARG PYTHON_VERSION=3.13
+ARG PYTHON_VERSION=3.13 as BUILD
 FROM docker.io/python:${PYTHON_VERSION}-slim as BUILD
 
 # Buenas prácticas para Python/pip en contenedores
@@ -52,6 +52,6 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Aplicación
 WORKDIR /gruas
-COPY . .
+COPY app/ .
 
-CMD ["python", "app/main.py"]
+CMD ["python", "main.py"]
