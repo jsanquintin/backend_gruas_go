@@ -8,23 +8,23 @@ from app.core.config import settings  # Importa las variables desde .env
 
 app = FastAPI(title="GruaGo API")
 
+# Crear carpetas estáticas y logs antes de montar
+for folder in [
+    "static/profile_pics",
+    "static/ride_receipts",
+    "static/misc",
+    "logs",
+]:
+    os.makedirs(folder, exist_ok=True)
+
+# Montar carpeta estática (para imágenes, recibos, etc.)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Evento de inicio de la aplicación
 @app.on_event("startup")
 def startup_event():
     # Inicializar la base de datos
     init_db()
-
-    # Crear carpetas estáticas y logs si no existen
-    for folder in [
-        "static/profile_pics",
-        "static/ride_receipts",
-        "static/misc",
-        "logs"
-    ]:
-        os.makedirs(folder, exist_ok=True)
-
-# Montar carpeta estática (para imágenes, recibos, etc.)
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Incluir rutas
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
