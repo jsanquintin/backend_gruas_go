@@ -31,7 +31,7 @@ folders=(
 	"profile_pics"
 	"ride_receipts"
 )
-paths="${PWD}/.volume"
+paths="${HOME}/.volume"
 for d in "${folders[@]}"; do
 	if [ ! -d "${paths}/${d}" ]; then
 		mkdir -p "${paths}/${d}"
