@@ -15,8 +15,8 @@ env/
 .env.bak
 
 # Environment configuration
-.env
-*.env
+#.env
+#*.env
 
 # Logs and temp files
 *.log
