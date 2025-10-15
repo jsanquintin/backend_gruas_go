@@ -20,7 +20,7 @@ ROOTLESS_PATH="${HOME}/.config/containers"
 # container setup for rootless
 if [ ! -d "${ROOTLESS_PATH}" ]; then
 	rsync -avx --exclude="*storage.conf*" --ignore-existing /usr/share/containers "${ROOTLESS_PATH}"
-	printf '[storage]\ndriver = "btrfs"\n' >"${ROOTLESS_PATH}"/storage.conf
+	#printf '[storage]\ndriver = "btrfs"\n' >"${ROOTLESS_PATH}"/storage.conf
 fi
 
 ## ============= ##
@@ -58,3 +58,4 @@ podman run -d \
 	localhost/gruasgo:latest
 
 podman generate systemd --new -n gruasgo | SYSTEMD_EDITOR=tee systemctl --user edit --full --force gruasgo.service
+systemctl --user enable --now gruasgo.service
