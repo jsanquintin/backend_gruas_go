@@ -1,4 +1,4 @@
-# podman build --rm --force-rm --no-cache --ignorefile container/.containerignore -t gruas -f container/containerfile .
+# podman build --rm --force-rm --no-cache --ignorefile container/.containerignore -t app -f container/containerfile .
 ARG PYTHON_VERSION=3.13 as BUILD
 FROM docker.io/python:${PYTHON_VERSION}-slim as BUILD
 
@@ -24,7 +24,7 @@ RUN apt update && apt upgrade -y && apt autoremove --purge -y && \
     rm -rf /var/lib/apt/lists/*
 
 
-WORKDIR /gruas
+WORKDIR /app
 COPY ./requirements.txt .
 RUN pip install -Ur requirements.txt
 
@@ -51,7 +51,7 @@ COPY --from=BUILD /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Aplicación
-WORKDIR /gruas
+WORKDIR /app
 COPY app/ .
 
 CMD ["python", "main.py"]
