@@ -34,4 +34,8 @@ app.include_router(service.router, prefix="/services", tags=["Services"])
 # Punto de entrada principal
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT)
+    try:
+        uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT)
+    except KeyboardInterrupt:
+        print("Servidor detenido correctamente.")
+
