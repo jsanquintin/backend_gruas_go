@@ -54,7 +54,7 @@ podman run -d \
 	--name gruasgo \
 	-v misc:/app/static/misc \
 	-v profile_pics:/app/static/profile_pics \
-	-v ride_receipts:/app/static/ride_receipts
-localhost/gruasgo:latest
+	-v ride_receipts:/app/static/ride_receipts \
+	localhost/gruasgo:latest
 
 podman generate systemd --new -n gruasgo | SYSTEMD_EDITOR=tee systemctl --user edit --full --force gruasgo.service
