@@ -1,6 +1,6 @@
-# ============================
-# 🚀 GruaGo Backend Requirements
-# ============================
+# ==============================
+# 🚗 GruasGo Backend Requirements
+# ==============================
 
 # --- Core Framework ---
 fastapi==0.111.0
@@ -12,7 +12,8 @@ psycopg[binary,pool]==3.2.10
 
 # --- Security / Auth ---
 python-jose==3.3.0
-passlib[bcrypt]==1.7.4
+passlib==1.7.4
+bcrypt==3.2.2
 python-multipart==0.0.9
 
 # --- Configuration ---
