@@ -1,0 +1,1 @@
+"""DEGARITAO Express MVP backend."""
