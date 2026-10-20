@@ -1,0 +1,34 @@
+name: Expand DEGARITAO Express source
+on:
+  push:
+    branches: [degaritao-express-deploy]
+    paths:
+      - 'source.b64chunks'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  expand-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expand verified source archive
+        run: |
+          python3 -m pip install --quiet brotli
+          python3 - <<'PY'
+          import base64, brotli, io, tarfile
+          from pathlib import Path
+          contents=Path('source.b64chunks').read_text(encoding='utf-8')
+          binary=b''.join(base64.b64decode(line) for line in contents.splitlines() if line.strip())
+          raw=brotli.decompress(binary)
+          with tarfile.open(fileobj=io.BytesIO(raw),mode='r:') as archive:
+              archive.extractall(path='.',filter='data')
+          Path('source.b64chunks').unlink()
+          PY
+      - name: Commit source files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m "feat: publish DEGARITAO Express v0.3.1 Railway and Netlify sources"
+          git push origin HEAD:degaritao-express-deploy
