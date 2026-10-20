@@ -4,6 +4,7 @@ on:
     branches: [degaritao-express-deploy]
     paths:
       - 'source.b64chunks'
+      - '.github/workflows/expand-source.yml'
   workflow_dispatch:
 permissions:
   contents: write
@@ -24,6 +25,9 @@ jobs:
           with tarfile.open(fileobj=io.BytesIO(raw),mode='r:') as archive:
               archive.extractall(path='.',filter='data')
           Path('source.b64chunks').unlink()
+          # GitHub App token cannot add new workflow files during bot push.
+          Path('.github/workflows/backend-tests.yml').unlink(missing_ok=True)
+          Path('.github/workflows/frontend-build.yml').unlink(missing_ok=True)
           PY
       - name: Commit source files
         run: |
